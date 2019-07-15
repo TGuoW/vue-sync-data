@@ -1,4 +1,3 @@
-
 const generateData = function (dataFn, syncDataFn) {
   return function () {
     return {
@@ -8,9 +7,31 @@ const generateData = function (dataFn, syncDataFn) {
   }
 }
 
+const ArrayMethod = [
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+]
+
+const ArrayProto = Array.prototype
+
 const defineReactive = function (obj, item) {
   const type = typeof obj[item]
-  if (type === 'object' && type !== null) {
+  const self = this
+  if (typeofThis(obj[item]) === 'Array') {
+    ArrayMethod.forEach(method => {
+      obj[item][method] = function () {
+        const res = ArrayProto[method].apply(this, [...arguments])
+        self._watcher.run()
+        return res
+      }
+    })
+    obj[item]
+  } else if (type === 'object' && type !== null) {
     Object.keys(obj[item]).forEach(ele => {
       defineReactive.call(this, obj[item], ele)
     })
@@ -18,7 +39,7 @@ const defineReactive = function (obj, item) {
     const setterFn = Object.getOwnPropertyDescriptor(obj, item).set
     let value
     Object.defineProperty(obj, item, {
-      set : (newValue) => {
+      set: (newValue) => {
         if (value === newValue) return
         value = newValue
         setterFn(newValue)
@@ -34,7 +55,7 @@ const typeofThis = function (tmp) {
 }
 
 const SyncData = {
-  install (Vue, Options) {
+  install(Vue, Options) {
     Options = Options || {}
 
     Vue.prototype.$syncSet = function (target, key, val) {
@@ -46,7 +67,10 @@ const SyncData = {
     }
     Vue.mixin({
       beforeCreate() {
-        const {data, syncData} = this.$options
+        const {
+          data,
+          syncData
+        } = this.$options
 
         if (!syncData) return
 
@@ -80,8 +104,12 @@ const SyncData = {
         this.$options.data = generateData(data, syncData)
       },
       created() {
-        const {$data} = this
-        const {syncData} = this.$options
+        const {
+          $data
+        } = this
+        const {
+          syncData
+        } = this.$options
 
         if (!syncData) return
 
