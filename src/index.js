@@ -35,22 +35,21 @@ const defineReactive = function (obj, item) {
     Object.keys(obj[item]).forEach(ele => {
       defineReactive.call(self, obj[item], ele)
     })
-  } else {
-    const getterFn = Object.getOwnPropertyDescriptor(obj, item).get
-    const setterFn = Object.getOwnPropertyDescriptor(obj, item).set
-    let value
-    Object.defineProperty(obj, item, {
-      get: () => {
-        return getterFn()
-      },
-      set: (newValue) => {
-        if (value === newValue) return
-        value = newValue
-        setterFn(newValue)
-        self._watcher.run()
-      }
-    })
   }
+  const getterFn = Object.getOwnPropertyDescriptor(obj, item).get
+  const setterFn = Object.getOwnPropertyDescriptor(obj, item).set
+  let value
+  Object.defineProperty(obj, item, {
+    get: () => {
+      return getterFn()
+    },
+    set: (newValue) => {
+      if (value === newValue) return
+      value = newValue
+      setterFn(newValue)
+      self._watcher.run()
+    }
+  })
 }
 
 const typeofThis = function (tmp) {
