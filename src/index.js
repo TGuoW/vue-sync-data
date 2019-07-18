@@ -33,29 +33,32 @@ const defineReactive = function (obj, item) {
     obj[item]
   } else if (type === 'object' && type !== null) {
     Object.keys(obj[item]).forEach(ele => {
-      defineReactive.call(this, obj[item], ele)
+      defineReactive.call(self, obj[item], ele)
     })
   } else {
+    const getterFn = Object.getOwnPropertyDescriptor(obj, item).get
     const setterFn = Object.getOwnPropertyDescriptor(obj, item).set
     let value
     Object.defineProperty(obj, item, {
+      get: () => {
+        return getterFn()
+      },
       set: (newValue) => {
         if (value === newValue) return
         value = newValue
         setterFn(newValue)
-        this._watcher.run()
+        self._watcher.run()
       }
     })
   }
 }
-
 
 const typeofThis = function (tmp) {
   return Object.prototype.toString.call(tmp).slice(8, -1)
 }
 
 const SyncData = {
-  install(Vue, Options) {
+  install (Vue, Options) {
     Options = Options || {}
 
     Vue.prototype.$syncSet = function (target, key, val) {
@@ -66,7 +69,7 @@ const SyncData = {
       }
     }
     Vue.mixin({
-      beforeCreate() {
+      beforeCreate () {
         const {
           data,
           syncData
@@ -91,7 +94,7 @@ const SyncData = {
         if (!Object.keys(syncDataRes).length) return
 
         const propertyObj = {}
-        Object.keys(dataRes).forEach(item => propertyObj[item] = true)
+        Object.keys(dataRes).forEach(item => { propertyObj[item] = true })
         if (
           Object.keys(syncDataRes).some(item => {
             if (propertyObj[item]) {
@@ -103,7 +106,7 @@ const SyncData = {
 
         this.$options.data = generateData(data, syncData)
       },
-      created() {
+      created () {
         const {
           $data
         } = this
@@ -114,9 +117,9 @@ const SyncData = {
         if (!syncData) return
 
         Object.keys(syncData()).forEach(item => {
-          defineReactive($data, item)
+          defineReactive.call(this, $data, item)
         })
-      },
+      }
     })
   }
 }
