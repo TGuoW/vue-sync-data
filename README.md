@@ -1,37 +1,5 @@
 <big><h1 align="center">vue-sync-data</h1></big>
 
-<p align="center">
-  <a href="https://npmjs.org/package/vue-sync-data">
-    <img src="https://img.shields.io/npm/v/vue-sync-data.svg?style=flat-square"
-         alt="NPM Version">
-  </a>
-
-  <a href="https://coveralls.io/r/foxbenjaminfox/vue-sync-data">
-    <img src="https://img.shields.io/coveralls/foxbenjaminfox/vue-sync-data.svg?style=flat-square"
-         alt="Coverage Status">
-  </a>
-
-  <a href="https://travis-ci.org/foxbenjaminfox/vue-sync-data">
-    <img src="https://img.shields.io/travis/foxbenjaminfox/vue-sync-data.svg?style=flat-square"
-         alt="Build Status">
-  </a>
-
-  <a href="https://npmjs.org/package/vue-sync-data">
-    <img src="https://img.shields.io/npm/dm/vue-sync-data.svg?style=flat-square"
-         alt="Downloads">
-  </a>
-
-  <a href="https://david-dm.org/foxbenjaminfox/vue-sync-data.svg">
-    <img src="https://david-dm.org/foxbenjaminfox/vue-sync-data.svg?style=flat-square"
-         alt="Dependency Status">
-  </a>
-
-  <a href="https://github.com/foxbenjaminfox/vue-sync-data/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/vue-sync-data.svg?style=flat-square"
-         alt="License">
-  </a>
-</p>
-
 ## 前言
 
 在vue中，有如下代码，打印结果为 `2 1`，这是由于vue中改变data后，视图并不是同步渲染的，而是将同步的所有数据改变操作推入到一个队列之中，然后在下一个`nextTick`更新。
