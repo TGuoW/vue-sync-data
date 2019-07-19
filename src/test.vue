@@ -67,7 +67,6 @@ export default Vue.extend({
         ${JSON.stringify(this[target])}
         ${this.$refs[target].innerText}
       `)
-      console.log(compare(this[target], JSON.parse(this.$refs[target].innerText)), this[target], JSON.parse(this.$refs[target].innerText))
       if (compare(this[target], JSON.parse(this.$refs[target].innerText))) {
         console.log('success')
       } else {
@@ -143,7 +142,7 @@ export default Vue.extend({
       this.output('ArrUnshiftSuccess')
     },
     mArrUnshiftFail () {
-      this.ArrUnshifttFail.unshift(0)
+      this.ArrUnshiftFail.unshift(0)
       this.output('ArrUnshiftFail')
     },
     mArrSpliceSuccess () {
@@ -151,7 +150,7 @@ export default Vue.extend({
       this.output('ArrSpliceSuccess')
     },
     mArrSpliceFail () {
-      this.ArrSplicetFail.splice(1, 0, 10)
+      this.ArrSpliceFail.splice(1, 0, 10)
       this.output('ArrSpliceFail')
     },
     mArrSortSuccess () {
@@ -161,7 +160,7 @@ export default Vue.extend({
       this.output('ArrSortSuccess')
     },
     mArrSortFail () {
-      this.ArrSorttFail.sort((a, b) => {
+      this.ArrSortFail.sort((a, b) => {
         return Math.random() - 0.5
       })
       this.output('ArrSortFail')
@@ -171,7 +170,7 @@ export default Vue.extend({
       this.output('ArrReverseSuccess')
     },
     mArrReverseFail () {
-      this.ArrReversetFail.reverse(1, 0, 10)
+      this.ArrReverseFail.reverse(1, 0, 10)
       this.output('ArrReverseFail')
     }
   },

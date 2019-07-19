@@ -23,14 +23,18 @@ const defineReactive = function (obj, item) {
   const type = typeof obj[item]
   const self = this
   if (typeofThis(obj[item]) === 'Array') {
+    const protoObj = {}
+    Object.setPrototypeOf(protoObj, Object.getPrototypeOf(obj[item]))
+
     ArrayMethod.forEach(method => {
-      obj[item][method] = function () {
+      protoObj[method] = function () {
         const res = ArrayProto[method].apply(this, [...arguments])
         self._watcher.run()
         return res
       }
     })
-    obj[item]
+
+    Object.setPrototypeOf(obj[item], protoObj)
   } else if (type === 'object' && type !== null) {
     Object.keys(obj[item]).forEach(ele => {
       defineReactive.call(self, obj[item], ele)
@@ -70,7 +74,7 @@ const SyncData = {
     Vue.mixin({
       beforeCreate () {
         const {
-          data,
+          data = () => ({}),
           syncData
         } = this.$options
 

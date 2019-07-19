@@ -9,11 +9,11 @@
     "dist/"
   ],
   "scripts": {
+    "test": "jest",
     "clean": "rimraf dist",
     "lint": "eslint src test",
     "check": "npm run lint -s && dependency-check package.json --no-default-entries src/index.js",
     "watch": "watch 'npm run build' src test",
-    "test": "babel-node --presets env test/index.js | tspec",
     "prebuild": "npm run check -s && npm run clean -s && mkdirp dist",
     "build": "npm run rollup -s && npm run babel -s",
     "rollup-esm": "rollup src/index.js --output.format esm --name AsyncComputed --output.file dist/vue-sync-data.esm.esnext.js",
@@ -55,6 +55,7 @@
     "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.4",
     "@babel/preset-env": "^7.5.4",
+    "@vue/test-utils": "^1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
     "babel-istanbul": "^0.12.2",
     "babel-preset-env": "^1.7.0",
@@ -69,12 +70,19 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^5.2.3",
     "estraverse-fb": "^1.3.2",
+    "jest": "^24.8.0",
+    "jest-serializer-vue": "^2.0.2",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.3",
     "rollup": "^1.0.2",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.2",
     "vue": "^2.5.21",
+    "vue-jest": "git+https://github.com/vuejs/vue-jest.git",
     "watch": "^1.0.2"
+  },
+  "dependencies": {
+    "@babel/node": "^7.5.5",
+    "jsdom": "^15.1.1"
   }
 }
